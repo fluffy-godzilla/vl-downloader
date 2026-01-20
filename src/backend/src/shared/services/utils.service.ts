@@ -11,7 +11,7 @@ export class UtilsService {
     return resolve(
       ...[
         __dirname,
-        '../../..',
+        '../../../..',
         this.configService.get<string>(EnvironmentEnum.DOWNLOADS_PATH),
         fileName,
       ].filter((item) => item !== undefined),

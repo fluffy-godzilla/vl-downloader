@@ -34,12 +34,13 @@ RUN pnpm run ci-prod
 RUN mv src/backend/dist ./backend
 RUN mv src/frontend/dist ./frontend
 RUN cp -r src/backend/node_modules .
-RUN cp -r src/backend/node_modules .
+RUN cp -r src/frontend/node_modules .
 RUN rm -rf src package.json pnpm-lock.yaml pnpm-workspace.yaml
 
 COPY docker/entrypoint.sh /docker/entrypoint.sh
 
-VOLUME /vl-downloader/backend/downloads
+VOLUME /vl-downloader/config
+VOLUME /vl-downloader/downloads
 
 ENV PORT=3500
 EXPOSE $PORT

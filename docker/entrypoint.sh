@@ -15,8 +15,13 @@ echo PORT: $PORT
 echo DIR_IS_NETSRV: $DIR_IS_NETSRV
 echo DL_DECRYPTED_ISO: $DL_DECRYPTED_ISO
 echo EXTRACT_DL_ARCHIVE: $EXTRACT_DL_ARCHIVE
+echo RENAME_EXTRACTED_ISO: $RENAME_EXTRACTED_ISO
 echo 
 
-chown -R abc:abc /vl-downloader/backend/downloads
+mkdir -p /vl-downloader/config
+chown -R abc:abc /vl-downloader/config
+
+mkdir -p /vl-downloader/downloads
+chown -R abc:abc /vl-downloader/downloads
 
 su -c "node /vl-downloader/backend/src/main.js" abc

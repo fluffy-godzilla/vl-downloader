@@ -15,7 +15,7 @@ bootstrap();
 if (!process.env.DOWNLOADS_PATH) {
   throw new Error('DOWNLOADS_PATH environment variable is missing');
 }
-const folderName = resolve(__dirname, '..', process.env.DOWNLOADS_PATH);
+const folderName = resolve(__dirname, '../..', process.env.DOWNLOADS_PATH);
 if (!fs.existsSync(folderName)) {
   fs.mkdirSync(folderName);
 }

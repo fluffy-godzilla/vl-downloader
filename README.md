@@ -27,7 +27,7 @@ The project is based on NestJS and Angular.
 # 🚀 Installation
 Recommended and the easiest way how to start to use of VL downloader is using docker.
 ```bash
-docker run -d -p 3500:3500 -v /path/to/downloads:/vl-downloader/backend/downloads ghcr.io/fluffy-godzilla/vl-downloader:latest
+docker run -d -p 3500:3500 -v /path/to/downloads:/vl-downloader/downloads ghcr.io/fluffy-godzilla/vl-downloader:latest
 ```
 
 # 📖 License
