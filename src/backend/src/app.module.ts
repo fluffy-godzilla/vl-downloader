@@ -35,7 +35,8 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
         database: resolve(
           __dirname,
           '../..',
-          configService.get<string>(EnvironmentEnum.DB_PATH) ?? '',
+          (configService.get<string>(EnvironmentEnum.CONFIG_PATH) ?? '.') +
+            '/db.sqlite',
         ),
         entities: [RomEntity],
         synchronize: true,

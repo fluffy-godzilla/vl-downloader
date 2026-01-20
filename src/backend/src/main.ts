@@ -12,6 +12,14 @@ async function bootstrap() {
 // eslint-disable-next-line @typescript-eslint/no-floating-promises
 bootstrap();
 
+if (!process.env.CONFIG_PATH) {
+  throw new Error('CONFIG_PATH environment variable is missing');
+}
+const configPath = resolve(__dirname, '../..', process.env.CONFIG_PATH);
+if (!fs.existsSync(configPath)) {
+  fs.mkdirSync(configPath);
+}
+
 if (!process.env.DOWNLOADS_PATH) {
   throw new Error('DOWNLOADS_PATH environment variable is missing');
 }
@@ -22,7 +30,9 @@ if (!fs.existsSync(folderName)) {
 
 try {
   // not good idea, but I want to keep simple Dockerfile, I know ideally should be in another container and used docker compose
-  exec(`redis-server --port ${process.env.REDIS_PORT}`);
+  exec(
+    `echo 'dir ${configPath}' | redis-server --port ${process.env.REDIS_PORT} -`,
+  );
 } catch (e) {
   console.log('Unable to run redis server form app');
   console.log(e);
