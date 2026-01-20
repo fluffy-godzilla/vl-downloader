@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { RomController } from './rom.controller';
 import { RomService } from './rom.service';
-import {BullModule} from "@nestjs/bullmq";
-import {RomConsumer} from "./rom.consumer";
-import {RomEntity} from "./rom.entity";
-import {TypeOrmModule} from "@nestjs/typeorm";
-import {SharedModule} from "../shared/shared.module";
+import { BullModule } from '@nestjs/bullmq';
+import { RomConsumer } from './rom.consumer';
+import { RomEntity } from './rom.entity';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { SharedModule } from '../shared/shared.module';
 
 @Module({
   imports: [
@@ -13,11 +13,9 @@ import {SharedModule} from "../shared/shared.module";
     BullModule.registerQueue({
       name: 'download',
     }),
-      SharedModule,
+    SharedModule,
   ],
-  controllers: [
-      RomController,
-  ],
-  providers: [RomService, RomConsumer]
+  controllers: [RomController],
+  providers: [RomService, RomConsumer],
 })
 export class RomModule {}

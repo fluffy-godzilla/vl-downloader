@@ -1,0 +1,6 @@
+onlyBuiltDependencies:
+  - '@nestjs/core'
+  - msgpackr-extract
+  - puppeteer
+  - sqlite3
+  - unrs-resolver

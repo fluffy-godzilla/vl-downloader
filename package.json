@@ -1,30 +1,24 @@
 {
   "name": "vl-downloader",
-  "workspaces": [
-    "src/backend",
-    "src/frontend"
-  ],
+  "version": "0.0.1",
+  "packageManager": "pnpm@10.28.1",
   "scripts": {
-    "start:be": "npm run start:dev -w backend",
-    "start:fe": "npm run start -w frontend",
-    "build:be": "npm run build -w backend",
-    "build:fe": "npm run build -w frontend",
-    "build:docs": "copy-files-from-to --config docs/copy-files-from-to.json",
-    "build": "rimraf dist && npm run build:be && npm run build:fe",
-    "gen:fe": "npm run gen -w frontend",
-    "gen:be": "npm run gen -w backend",
-    "start": "npm run start:prod -w backend",
-    "docs": "docsify serve ./docs",
-    "deploy:docs": "npm run build:docs && netlify deploy --dir=dist/docs --prod",
-    "release": "npm run build && docker build -t raiper34/vl-downloader:1.0.0 -t raiper34/vl-downloader:latest . && docker push raiper34/vl-downloader:1.0.0 && docker push raiper34/vl-downloader:latest",
-    "commit": "cz"
+    "gen:be": "pnpm run -C src/backend  gen",
+    "gen:fe": "pnpm run -C src/frontend gen",
+    "build:be": "pnpm run -C src/backend  build",
+    "build:fe": "pnpm run -C src/frontend build",
+    "build": "rimraf src/backend/dist && rimraf src/frontend/dist && pnpm run build:be && pnpm run build:fe",
+    "start:be": "pnpm run -C src/backend  start:dev",
+    "start:fe": "pnpm run -C src/frontend start",
+    "start": "pnpm run -C src/backend  start:prod",
+    "clean": "rm -rf node_modules && rm -rf src/backend/node_modules && rm -rf src/frontend/node_modules",
+    "ci": "pnpm install --frozen-lockfile && pnpm -C src/backend install --frozen-lockfile && pnpm -C src/frontend install --frozen-lockfile",
+    "ci-prod": "pnpm install --frozen-lockfile --prod && pnpm -C src/backend install --frozen-lockfile --prod && pnpm -C src/frontend install --frozen-lockfile --prod"
   },
   "devDependencies": {
-    "commitizen": "^4.3.1",
-    "copy-files-from-to": "^3.2.2",
-    "cz-conventional-changelog": "^3.3.0",
-    "docsify-cli": "^4.4.4",
-    "netlify-cli": "^10.5.1",
-    "rimraf": "^6.0.1"
+    "rimraf": "^6.1.2"
+  },
+  "dependencies": {
+    "backend": "^0.0.0"
   }
 }

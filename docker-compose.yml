@@ -1,0 +1,17 @@
+version: '2.1'
+services:
+  vl-downloader:
+    image: ghcr.io/fluffy-godzilla/vl-downloader:latest
+    container_name: vl-downloader
+    restart: unless-stopped
+    ports:
+      - 3500:5000/tcp
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - DIR_IS_NETSRV=true         # the downloads volume is a ps3netsrv root directory
+      - DL_DECRYPTED_ISO=true      # download decrypted PS3 ISOs (.dec.iso)
+      - EXTRACT_DL_ARCHIVE=true    # extract downloaded .7z archives
+      - RENAME_EXTRACTED_ISO=true  # rename extracted ISO filename to include game serial number
+    volumes:
+      - /tmp:/vl-downloader/backend/downloads:rw

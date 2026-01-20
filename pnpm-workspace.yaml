@@ -1,0 +1,7 @@
+onlyBuiltDependencies:
+  - '@parcel/watcher'
+  - docsify
+  - esbuild
+  - netlify-cli
+  - sharp
+  - unix-dgram

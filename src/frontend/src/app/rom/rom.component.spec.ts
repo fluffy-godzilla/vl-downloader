@@ -8,9 +8,8 @@ describe('RomComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RomComponent]
-    })
-    .compileComponents();
+      imports: [RomComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(RomComponent);
     component = fixture.componentInstance;

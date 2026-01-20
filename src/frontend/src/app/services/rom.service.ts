@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
-import {createStore} from '@ngneat/elf';
+import { createStore } from '@ngneat/elf';
 import {
   deleteEntities,
   selectAllEntities,
   selectManyByPredicate,
   upsertEntities,
-  withEntities
+  withEntities,
 } from '@ngneat/elf-entities';
-import {HttpClient} from '@angular/common/http';
-import {Socket} from 'ngx-socket-io';
-import {tap} from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Socket } from 'ngx-socket-io';
+import { tap } from 'rxjs';
 
 export enum TrackStatusEnum {
   Queued,
@@ -21,7 +21,7 @@ export enum TrackStatusEnum {
 export interface Rom {
   id: number;
   url: string;
-  status: TrackStatusEnum,
+  status: TrackStatusEnum;
   totalBytes?: number;
   receivedBytes?: number;
   name?: string;
@@ -38,34 +38,33 @@ enum WsOperation {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RomService {
-
-  private store = createStore(
-    { name: STORE_NAME },
-    withEntities<Rom>(),
-  );
+  private store = createStore({ name: STORE_NAME }, withEntities<Rom>());
 
   all$ = this.store.pipe(selectAllEntities());
-  finished$ = this.store.pipe(selectManyByPredicate(rom => rom.status === TrackStatusEnum.Completed));
-  failed$ = this.store.pipe(selectManyByPredicate(rom => rom.status === TrackStatusEnum.Error));
+  finished$ = this.store.pipe(
+    selectManyByPredicate((rom) => rom.status === TrackStatusEnum.Completed),
+  );
+  failed$ = this.store.pipe(selectManyByPredicate((rom) => rom.status === TrackStatusEnum.Error));
 
   constructor(
     private readonly http: HttpClient,
     private readonly socket: Socket,
-    ) {
+  ) {
     this.initWsConnection();
   }
 
   fetch(): void {
-    this.http.get<Rom[]>(ENDPOINT).pipe(
-      tap((data: Rom[]) => this.store.update(upsertEntities(data))),
-    ).subscribe();
+    this.http
+      .get<Rom[]>(ENDPOINT)
+      .pipe(tap((data: Rom[]) => this.store.update(upsertEntities(data))))
+      .subscribe();
   }
 
   processUrl(url: string): void {
-    this.http.post(ENDPOINT, {url}).subscribe();
+    this.http.post(ENDPOINT, { url }).subscribe();
   }
 
   delete(id: number): void {
@@ -77,16 +76,20 @@ export class RomService {
   }
 
   deleteCompleted(): void {
-    this.finished$.pipe(tap(finished => finished.forEach(item => this.delete(item.id)))).subscribe();
+    this.finished$
+      .pipe(tap((finished) => finished.forEach((item) => this.delete(item.id))))
+      .subscribe();
   }
 
   deleteFailed(): void {
-    this.failed$.pipe(tap(failed => failed.forEach(item => this.delete(item.id)))).subscribe();
+    this.failed$.pipe(tap((failed) => failed.forEach((item) => this.delete(item.id)))).subscribe();
   }
 
   private initWsConnection(): void {
     this.socket.on(WsOperation.Update, (rom: Rom) => this.store.update(upsertEntities(rom)));
-    this.socket.on(WsOperation.Delete, ({id}: {id: number}) => this.store.update(deleteEntities(Number(id))));
-    this.socket.on(WsOperation.New, (playlist: Rom) => this.store.update(upsertEntities(playlist),));
+    this.socket.on(WsOperation.Delete, ({ id }: { id: number }) =>
+      this.store.update(deleteEntities(Number(id))),
+    );
+    this.socket.on(WsOperation.New, (playlist: Rom) => this.store.update(upsertEntities(playlist)));
   }
 }

@@ -1,6 +1,6 @@
 {
   "/api/**": {
-    "target": "http://localhost:3000/api",
+    "target": "http://localhost:3500/api",
     "secure": false,
     "changeOrigin": true,
     "pathRewrite": {
@@ -8,7 +8,7 @@
     }
   },
   "/socket.io/*": {
-    "target": "http://localhost:3000/socket.io/",
+    "target": "http://localhost:3500/socket.io/",
     "ws": true,
     "logLevel": "debug"
   }

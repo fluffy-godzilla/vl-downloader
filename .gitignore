@@ -1,6 +1,8 @@
+/_src
 /node_modules
 /dist
 /.idea
+/.pnpm-store
 **/*.sqlite
 # Local Netlify folder
 .netlify
