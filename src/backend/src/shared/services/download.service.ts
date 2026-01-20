@@ -18,6 +18,7 @@ const SELECTORS = {
   titleSystem: 'document.querySelector(".sectionTitle").textContent.trim()',
   titleMeta:
     'document.querySelector("meta[property=\'og:title\']").getAttribute("content")',
+  formatSelect: '#dl_format',
   downloadButton: '#dl_form button',
   acknowledgeButton: 'input[value="Continue"]',
 };
@@ -73,10 +74,19 @@ export class DownloadService {
     // Get System name
     const system = (await page.evaluate(SELECTORS.titleSystem)) as string;
     this.logger.debug(`System is ${system}`);
+
     // Get meta data
     const name = (await page.evaluate(SELECTORS.titleMeta)) as string;
     this.logger.debug(`Name of rom is ${name}`);
     await updateFn({ system, name });
+
+    // switch to decrypted ISO, if selected, only for PS3
+    if (system.toLowerCase().startsWith('playstation 3')) {
+      if (process.env.DL_DECRYPTED_ISO === 'true') {
+        await page.select('#dl_format', '1');
+        this.logger.debug(`Decrypted ISO selected`);
+      }
+    }
 
     // Click download button
     await page.click(SELECTORS.downloadButton);
